@@ -1,0 +1,24 @@
+{
+  "name": "sql-query-optimizer",
+  "version": "1.0.0",
+  "repository": "https://github.com/chenningg/sql-query-optimizer.git",
+  "author": "Chen Ning <chenningg97@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace sql-query-optimizer-server\" \"npm start --workspace sql-query-optimizer-frontend\"",
+    "start": "npm run dev",
+    "dev:server": "npm run dev --workspace sql-query-optimizer-server",
+    "start:frontend": "npm start --workspace sql-query-optimizer-frontend",
+    "build": "npm run build --workspace sql-query-optimizer-frontend",
+    "test": "npm test --workspace sql-query-optimizer-frontend"
+  },
+  "devDependencies": {
+    "babel-preset-react-app": "10.0.0",
+    "concurrently": "^9.1.2"
+  }
+}
