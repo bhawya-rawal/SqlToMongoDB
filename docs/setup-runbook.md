@@ -4,6 +4,7 @@
 
 - Node.js and npm.
 - PostgreSQL.
+- A C compiler and `make` for the bundled TPC-H generator.
 - A TPC-H database loaded with data and analyzed statistics.
 
 ## Install
@@ -46,11 +47,10 @@ PORT=5000
 
 1. Create the `TPC-H` database.
 2. Load `db/dss.ddl`.
-3. Generate the TPC-H data files.
-4. Clean the generated `.tbl` files with `db/clean-tpch.js`.
-5. Load the data with `db/load_tpch.sql`.
-6. Apply constraints with `db/dss.ri`.
-7. Run `ANALYZE` so `pg_stats` is populated.
+3. Run `npm run generate:tpch-data` to populate `db/data/`.
+4. Load the data with `db/load_tpch.sql`.
+5. Apply constraints with `db/dss.ri`.
+6. Run `ANALYZE` so `pg_stats` is populated.
 
 ## Common Failure Modes
 

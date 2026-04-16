@@ -56,6 +56,8 @@ See [docs/sql-to-mongo-support.md](docs/sql-to-mongo-support.md) for the detaile
 - Node.js 20+
 - npm
 - PostgreSQL 14+
+- GCC or Clang
+- `make`
 - TPC-H schema and data loaded into PostgreSQL
 
 The project has been validated on Linux with a local PostgreSQL server reachable over the Unix socket.
@@ -64,7 +66,7 @@ The project has been validated on Linux with a local PostgreSQL server reachable
 
 You can run the entire stack with Docker as well. This brings up:
 
-- PostgreSQL with the TPC-H schema and data loaded automatically
+- PostgreSQL with the TPC-H schema loaded automatically after you generate the CSV files in `db/data/`
 - The backend API on port 5000
 - The frontend UI on port 3000
 
@@ -80,7 +82,7 @@ After the containers are healthy, open:
 - API: http://localhost:5001
 - PostgreSQL: localhost:55432
 
-The Docker setup uses the generated CSV files in `db/data/` and a PostgreSQL init script under `docker/postgres/init/`.
+The repository includes everything needed to regenerate the TPC-H CSVs locally. Use the bundled generator script to populate `db/data/` before starting Docker or running the load scripts. If any required CSV is missing, the database container fails fast during initialization.
 
 ## Quick Start
 
@@ -124,9 +126,15 @@ psql "host=localhost port=5432 dbname=TPC-H user=postgres password=postgres" -c 
 
 If your setup uses local peer authentication, replace the connection string with the role and host settings that match your machine.
 
-4. Load the TPC-H schema and data.
+4. Generate the TPC-H CSV files into `db/data/`.
 
-This repository already includes the generated CSV data in `db/data/`. If you only need to bootstrap the database, run:
+The repository vendors the TPC-H generator source under `db/tpch-dbgen/`, so you can build and run it without using a second repository:
+
+```bash
+npm run generate:tpch-data
+```
+
+Once `db/data/` contains the required CSV files, bootstrap the database with:
 
 ```bash
 psql -d "TPC-H" -f db/dss.ddl
@@ -162,15 +170,13 @@ npm run start:frontend
 
 ## Regenerating TPC-H data
 
-If you want to rebuild the dataset from scratch, use the TPC-H `dbgen` bundle in the sibling `pg-tpch-dbgen` repository that was added for this workspace.
+The normal setup path is to regenerate the CSVs locally with the vendored TPC-H generator.
 
 Typical flow:
 
-1. Build `dbgen` inside that repo.
-2. Run `./dbgen -s 1` to generate the SF1 `.tbl` files.
-3. Convert the `.tbl` files to `.csv` by removing the trailing `|`.
-4. Place the CSV files in `db/data/`.
-5. Run the load commands from the quick start section.
+1. Make sure a C compiler and `make` are installed.
+2. Run `npm run generate:tpch-data` to generate the SF1 `.tbl` files and convert them to CSVs in `db/data/`.
+3. Run the load commands from the quick start section.
 
 ## Example queries
 

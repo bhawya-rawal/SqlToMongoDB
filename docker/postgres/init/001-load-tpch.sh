@@ -1,6 +1,14 @@
 #!/bin/sh
 set -eu
 
+data_dir=/data
+for csv in part.csv region.csv nation.csv supplier.csv customer.csv partsupp.csv orders.csv lineitem.csv; do
+	if [ ! -f "$data_dir/$csv" ]; then
+		echo "Missing required TPC-H CSV: $data_dir/$csv. Run 'npm run generate:tpch-data' before starting the database container." >&2
+		exit 1
+	fi
+done
+
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<'SQL'
 \i /docker-entrypoint-initdb.d/sql/dss.ddl
 SQL

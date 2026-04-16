@@ -535,6 +535,7 @@ function buildGroupAndProject(
   }
 
   pipeline.push({ $project: project });
+  pipeline.push({ $unset: "_id" });
 
   return pipeline;
 }
@@ -728,7 +729,11 @@ function buildSelectTranslation(stmt: any, includeTail = true): SqlToMongoResult
     }
     if (!hasWildcardSelect && Object.keys(project).length > 0) {
       pipeline.push({ $project: project });
+    } else if (hasWildcardSelect && Object.keys(project).length > 0) {
+      pipeline.push({ $addFields: project });
     }
+
+    pipeline.push({ $unset: "_id" });
   }
 
   if (includeTail) {

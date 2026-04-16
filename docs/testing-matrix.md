@@ -2,7 +2,7 @@
 
 ## Current State
 
-The repository currently has one stale frontend scaffold test and no meaningful backend or optimizer coverage.
+The repository now has focused backend coverage for the server API, SQL-to-Mongo translator, and optimizer helpers. Frontend coverage is still light, and integration coverage is still missing.
 
 ## Recommended Coverage
 

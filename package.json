@@ -14,6 +14,7 @@
     "start": "npm run dev",
     "dev:server": "npm run dev --workspace sql-query-optimizer-server",
     "start:frontend": "npm start --workspace sql-query-optimizer-frontend",
+    "generate:tpch-data": "sh db/generate-tpch-data.sh",
     "build": "npm run build --workspace sql-query-optimizer-frontend",
     "test": "npm test --workspace sql-query-optimizer-frontend"
   },

@@ -21,6 +21,7 @@ COPY package.json package-lock.json ./
 COPY server/package.json ./server/package.json
 COPY frontend/package.json ./frontend/package.json
 COPY --from=deps /app/node_modules ./node_modules
+RUN npm prune --omit=dev
 COPY --from=build /app/server/dist ./server/dist
 COPY server/.env.example ./server/.env.example
 
